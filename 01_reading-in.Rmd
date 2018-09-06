@@ -1,0 +1,42 @@
+---
+title: 'Inference Notes'
+date: Last updated \today
+author:
+- name: Shiro Kuriwaki
+  affiliation: Harvard University
+  email: kuriwaki@g.harvard.edu
+output:
+  pdf_document:
+    latex_engine: xelatex
+    template: xelatex.template
+    fig_caption: TRUE
+---
+
+
+```{r, include = FALSE}
+library(tidyverse)
+```
+
+# The Programming User Interface
+
+# Where is Your File?
+
+Computer files (data, documents, programs) are organized hiearchically, like a branching tree. Folders can contain files, and also other folders. To load a dataset, you need to specify where that file is. 
+
+We denote the hierarchy of a folder by the `/` (slash) symbol. `data/input/2018-08` indicates the `2018-08` folder, which is included in the `input` folder, which is in turn included in the `data` folder. 
+
+Files (but not folders) have "file extensions" which you are probably familiar with already: `.docx`, `.pdf`, and `.pdf` already. The file extensions you will see in this course a lot are:
+
+* `.pdf`
+* `.csv`: A comma separated values file
+* `.xlsx`
+* `.dta`: Stata data
+* `.sav`: SPSS data
+
+* `.R`: R code (script)
+* `.Rmd`: Rmarkdown code (text + code)
+* `.do`: Stata code (script)
+
+The goal of the rest of this document is to enable you to write code that will read in data files into your GUI. 
+
+
