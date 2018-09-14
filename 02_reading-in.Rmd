@@ -1,0 +1,93 @@
+---
+title: 'Reading In Data'
+date: Last updated \today
+author:
+- name: Shiro Kuriwaki
+output:
+  pdf_document:
+    latex_engine: xelatex
+    template: xelatex.template
+    fig_caption: TRUE
+---
+
+
+```{r, include = FALSE}
+library(tidyverse)
+library(survey)
+library(srvyr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+By now, you should have:
+
+* Downloaded R or Stata
+* Understood wht's what in a GUI
+
+# Where is Your File?
+
+Computer files (data, documents, programs) are organized hiearchically, like a branching tree. Folders can contain files, and also other folders. To load a dataset, you need to specify where that file is. 
+
+We denote the hierarchy of a folder by the `/` (slash) symbol. `data/input/2018-08` indicates the `2018-08` folder, which is included in the `input` folder, which is in turn included in the `data` folder. 
+
+Files (but not folders) have "file extensions" which you are probably familiar with already: `.docx`, `.pdf`, and `.pdf` already. The file extensions you will see for this course a lot are:
+
+* `.csv`: A comma separated values file
+* `.xlsx`
+* `.dta`: Stata data
+* `.sav`: SPSS data
+* `.Rds`: R data single file
+* `.Rdata`: R data (could be multiple files)
+
+
+
+The goal of the rest of this document is to enable you to write code that will read in data files into your GUI. 
+
+# Reading in R
+
+Use the `haven` package. There is a function to read and write certain types of data files. 
+```{r}
+library(haven)
+```
+
+
+```{r}
+hh <- readRDS("data/input/2018-08/HHP_August2018_data.Rds")
+```
+
+You can call the name you gave it to browse it:
+
+```{r, eval = FALSE}
+hh
+```
+
+
+For a discrete outcome like a poll question, the `count` function is quick and useful. Enter the name of your dataset and the name of the variable you care about. 
+
+To use the `count` function you need the `dplyr` package. Add `library(dplyr)` to the beginning of your code. Even easier, add `library(tidyverse)`, that wil load `dplyr` and other related packages we will end up using. 
+
+```{r}
+library(tidyverse)
+```
+
+Now let's use `count`
+
+```{r}
+count(hh, QM3AR1)
+```
+
+# Reading in Stata
+
+
+The command to read in a Stata file is `use`
+
+```{javascript, eval = FALSE}
+use HHP_August2018_data.dta, clear
+```
+
+Actually, probably the harder part is getting your computer to find that file. In my case, it looks like
+
+```{shell, eval = FALSE}
+cd "~/Dropbox/survey-notes/data/input/2018-08"
+```
+
+

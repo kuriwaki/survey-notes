@@ -1,0 +1,148 @@
+---
+title: 'Tables from Data'
+date: Last updated \today
+author:
+- name: Shiro Kuriwaki
+output:
+  pdf_document:
+    latex_engine: xelatex
+    template: xelatex.template
+    fig_caption: TRUE
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+By now, you should have:
+
+* Downloaded R or Stata
+* Understood wht's what in a GUI
+* Read in the August 2018 Poll
+
+# Reading In
+
+
+As we saw in the previous note, in R:
+
+```{r, message = FALSE}
+library(tidyverse)
+
+hh <- readRDS("data/input/2018-08/HHP_August2018_data.Rds")
+```
+
+
+
+And in Stata reading in a Stata dataset  is through the `use` command
+
+```{javascript, eval = FALSE}
+cd "data/input/2018-08"
+use HHP_August2018_data, clear
+```
+
+
+# Simple Tables in R
+
+
+```{r}
+xtabs(formula = ~ QHO1, data =  hh)
+```
+
+And in R, you can abbreviate the argument names if you give them in the order provided:
+
+```{r}
+xtabs(~ QM3AR1 + QHO1, hh)
+```
+
+# Simple Tables in Stata
+
+The tab (or tabulate) command
+```{javascript, eval = FALSE}
+tab QM3AR1
+```
+
+```
+       M3AR1 1. The |
+ economy: M3 Do you |
+         approve or |
+  disapprove of the |
+job President Trump |      Freq.     Percent        Cum.
+--------------------+-----------------------------------
+   Strongly approve |        414       29.01       29.01
+   Somewhat approve |        381       26.70       55.71
+Somewhat disapprove |        244       17.10       72.81
+Strongly disapprove |        388       27.19      100.00
+--------------------+-----------------------------------
+              Total |      1,427      100.00
+
+```
+
+Options come after the comma (look at help page for what options are available)
+
+```{javascript, eval = FALSE}
+tab QM3AR1, sort
+```
+
+
+```
+       M3AR1 1. The |
+ economy: M3 Do you |
+         approve or |
+  disapprove of the |
+job President Trump |      Freq.     Percent        Cum.
+--------------------+-----------------------------------
+   Strongly approve |        414       29.01       29.01
+Strongly disapprove |        388       27.19       56.20
+   Somewhat approve |        381       26.70       82.90
+Somewhat disapprove |        244       17.10      100.00
+--------------------+-----------------------------------
+              Total |      1,427      100.00
+```
+
+Cross-tabs
+
+```{javascript, eval = FALSE}
+tab QM3AR1 QHO1 
+```
+
+```
+       M3AR1 1. The |
+ economy: M3 Do you |
+         approve or |    HO1 Do you have
+  disapprove of the |   health insurance?
+job President Trump |       Yes         No |     Total
+--------------------+----------------------+----------
+   Strongly approve |       375         39 |       414 
+   Somewhat approve |       352         29 |       381 
+Somewhat disapprove |       220         24 |       244 
+Strongly disapprove |       350         38 |       388 
+--------------------+----------------------+----------
+              Total |     1,297        130 |     1,427 
+```
+
+
+
+# Defining the Survey in R
+
+To do more complex operations like using weights, use the `survey` package to define the properties of the dataset.
+
+```{r, message = FALSE}
+library(survey)
+library(srvyr)
+```
+
+
+To set weights, 
+
+```{r}
+hh_svy <- svydesign(data = hh, ids = ~0, weights = ~Propwts)
+```
+
+To do cross-tabs (now with weights)
+
+```{r}
+svytable(~ QM3AR1 + QHO1, hh_svy)
+```
+
