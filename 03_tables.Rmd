@@ -56,6 +56,49 @@ And in R, you can abbreviate the argument names if you give them in the order pr
 xtabs(~ QM3AR1 + QHO1, hh)
 ```
 
+
+
+
+## R Tables with Percentages
+For proportions, you can use the `prop.table()` function. 
+
+```{r}
+h1 <- xtabs(~ QHO1, data = hh)
+prop.table(h1)
+```
+
+For presentation, it is always better to round to about 2 or 3 digits in total to make the numbers more readable. For this you would want to wrap your porportion table with the `round()` function.
+
+```{r}
+round(prop.table(h1), digits = 2)
+```
+
+
+
+When using a table (cross-tabulation), `prop.table` has the option to either compute percentages as a proportion of the rows, the columns, or the cells. 
+```{r}
+m3h1 <- xtabs(~ QM3AR1 + QHO1, hh)
+```
+
+In cell percentages, all cells add up to 1:
+```{r}
+prop.table(m3h1, margin = NULL)
+```
+
+
+With row percentages (`margin = 1`), each row adds up separately to 1:
+```{r}
+prop.table(m3h1, margin = 1)
+```
+
+And with column percentages (`margin = 2`), each column adds up separately to 1:
+```{r}
+prop.table(m3h1, margin = 2)
+```
+
+
+
+
 # Simple Tables in Stata
 
 The tab (or tabulate) command
